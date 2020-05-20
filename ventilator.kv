@@ -5,8 +5,9 @@
     orientation: "horizontal"
     size_hint: (1, None)
     height: 60
-    spacing: 5
-    padding: 5
+    
+    
+    time: time
     canvas:
         Color:
             rgba: 0.07, 0.196, 0.392, 1
@@ -15,14 +16,15 @@
             size: self.size
     BoxLayout:
         orientation: "horizontal"
-        padding_x: 15
+        #padding_x: 15
         Image:
             id: avatar
             source: "young-man.png"
             keep_ratio: False
             allow_stretch: False
             size_hint_x: None
-            width: 40
+            width: 50
+            halign: 'right'
         Label:
             id: user
             text: "Zacharias Townsend\n765-316-1313"
@@ -31,24 +33,17 @@
             halign: "left"
             valign: "middle"
             padding_x: 15
-    BoxLayout:
-        orientation: "horizontal"
-        padding_x: 15
-        Image:
-            id: logo
-            source: "iAI white.png"
-            keep_ratio: False
-            allow_stretch: False
-            size_hint_x: None
-            width: 170
-        Label:
-            id: "brand"
-            text: "NeoBreath"
-            font_size: 30
-            halign: "left"
+    Image:
+        id: logo
+        source: "logo.png"
+        keep_ratio: True
+        allow_stretch: False
+        size_hint_x: None
+        width: 250
+
     Label:
         id: time
-        text: "9:48 PM"
+        text: root.now
         font_size: 18
         text_size: self.size
         halign: "right"
@@ -68,6 +63,7 @@
     BoxLayout:
         orientation: "horizontal"
         BoxLayout:
+            padding: 15
             size_hint_x: None
             width: 800
             orientation: "vertical"
@@ -80,63 +76,65 @@
                 plot: LinePlot
                 #xlabel:'X'
                 ylabel:'Pressure'
-                tick_color: [1,1,1,0.5]
-                #x_ticks_minor:2
-                #x_ticks_major:10
-                #y_ticks_major:0.5
-                y_grid_label:True
+                font_size: 20
+                padding: 10
+                tick_color: 1, 1, 1, 0.5
+                border_color: 1, 1, 1, 1
+                #background_color: 0.01, 0.1, 0.25, 1
+                x_ticks_major:5
+                y_ticks_major:20
+                y_grid_label:False
                 x_grid_label:False
-                padding:5
                 x_grid:True
                 y_grid:True
-                #xmin:-0
-                #xmax:100
-                #ymin:-0
-                #ymax:1
-                #pos: 0, root.height / 6
-                #size: root.width * 2 / 3 , root.height * 18 / 24
+                xmin:-0
+                xmax:100
+                ymin:-0
+                ymax:100
             Graph:
                 id: flow
                 plot: LinePlot
                 #xlabel:'X'
                 ylabel:'Flow'
-                tick_color: [1,1,1,0.5]
-                #x_ticks_minor:2
-                #x_ticks_major:10
-                #y_ticks_major:0.5
-                y_grid_label:True
+                font_size: 20
+                padding: 10
+                tick_color: 1, 1, 1, 0.5
+                border_color: 1, 1, 1, 1
+                #background_color: 0.01, 0.1, 0.25, 1
+                x_ticks_major:5
+                y_ticks_major:20
+                y_grid_label:False
                 x_grid_label:False
-                padding:5
                 x_grid:True
                 y_grid:True
-                #xmin:-0
-                #xmax:100
-                #ymin:-0
-                #ymax:1
-                #pos: 0, root.height / 6
-                #size: root.width * 2 / 3 , root.height * 18 / 24
+                xmin:-0
+                xmax:100
+                ymin:-0
+                ymax:100
             Graph:
                 id: volumn
                 plot: LinePlot
                 #xlabel:'X'
                 ylabel:'Volumn'
-                tick_color: [1,1,1,0.5]
-                #x_ticks_minor:2
-                #x_ticks_major:10
-                #y_ticks_major:0.5
-                y_grid_label:True
+                font_size: 20
+                padding: 10
+                tick_color: 1, 1, 1, 0.5
+                border_color: 1, 1, 1, 1
+                #background_color: 0.01, 0.1, 0.25, 1
+                x_ticks_major:5
+                y_ticks_major:20
+                y_grid_label:False
                 x_grid_label:False
-                padding:5
                 x_grid:True
                 y_grid:True
-                #xmin:-0
-                #xmax:100
-                #ymin:-0
-                #ymax:1
-                #pos: 0, root.height / 6
-                #size: root.width * 2 / 3 , root.height * 18 / 24
+                xmin:-0
+                xmax:100
+                ymin:-0
+                ymax:100
+                
 
         BoxLayout:
+            padding: 15
             orientation: "vertical"
             id: right
             #parameter1 IE ratio
@@ -146,23 +144,51 @@
             Label:
                 id: ieratio
                 text: "I:E Ratio\n1:3"
-                font_size: 30
+                font_size: 25
                 text_size: self.size
                 halign: "center"
                 valign: "middle"
                 padding_x: 15
-            Label:
-                id: param
-                text: "Parameter\n225"
-                font_size: 30
-                text_size: self.size
-                halign: "center"
-                valign: "middle"
-                padding_x: 15
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    text: "Parameter"
+                    font_size: 25
+                    text_size: self.size
+                    halign: "center"
+                    valign: "bottom"
+                    padding_x: 15
+                BoxLayout:
+                    orientation: "horizontal"
+                    Button:
+                        text: "-"
+                        text_size: self.size
+                        background_normal: ''
+                        background_color: 0.0157, 0.1137, 0.2667, 1
+                        font_size: 25
+                        halign: 'center'
+                        valign: 'top'
+                        on_press: root.minus_one()
+                    Label:
+                        id: param
+                        text: str(root.param)
+                        font_size: 25
+                        text_size: self.size
+                        halign: 'center'
+                        valign: 'top'
+                    Button:
+                        text: '+'
+                        text_size: self.size
+                        background_normal: ''
+                        background_color: 0.0157, 0.1137, 0.2667, 1
+                        font_size: 25
+                        halign: 'center'
+                        valign: 'top'
+                        on_press: root.plus_one()
             Label:
                 id: temp
-                text: "Temperature\n75\N{DEGREE SIGN}F"
-                font_size: 30
+                text: "Temperature\n75\xb0F"
+                font_size: 25
                 text_size: self.size
                 halign: "center"
                 valign: "middle"
@@ -170,7 +196,7 @@
             Label:
                 id: humid
                 text: "Humidity\n80%"
-                font_size: 30
+                font_size: 25
                 text_size: self.size
                 halign: "center"
                 valign: "middle"
