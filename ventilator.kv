@@ -169,6 +169,7 @@
                         halign: 'center'
                         valign: 'top'
                         on_press: root.minus_one()
+                        on_release: app.beep()
                     Label:
                         id: param
                         text: str(root.param)
@@ -185,6 +186,7 @@
                         halign: 'center'
                         valign: 'top'
                         on_press: root.plus_one()
+                        on_release: app.beep()
             Label:
                 id: temp
                 text: "Temperature\n75\xb0F"
@@ -242,6 +244,7 @@
         on_press:
             app.manager.current = "home"
             if self.state == "normal": self.state = "down"
+        on_release: app.beep()
     ToggleButton:
         group: "mainmenu"
         text: "Records"
@@ -249,6 +252,7 @@
         on_press:
             app.manager.current = "records"
             if self.state == "normal": self.state = "down"
+        on_release: app.beep()
     ToggleButton:
         group: "mainmenu"
         text: "Alarms"
@@ -256,5 +260,6 @@
         on_press:
             app.manager.current = "alarms"
             if self.state == "normal": self.state = "down"
+        on_release: app.beep()
 
 

@@ -16,6 +16,7 @@ from threading import Thread
 import audioop
 import pyaudio
 from datetime import datetime
+from kivy.core.audio import SoundLoader
 
 from math import sin
 Config.set("graphics", "resizable", False)
@@ -74,6 +75,8 @@ class Home(BoxLayout):
         
     def minus_one(self):
         self.param -= 1
+    
+    
 
 class Records(GridLayout):
     pass
@@ -104,6 +107,7 @@ class MainMenu(BoxLayout):
 class VentilatorApp(App):
     def build(self):
         Window.size = (1024, 600)
+        self.audio = SoundLoader.load('beep-21.mp3')
         self.manager = ScreenManager(transition=FadeTransition(duration=0.15))
         
         home = Home()
@@ -130,6 +134,10 @@ class VentilatorApp(App):
         layout.add_widget(self.manager)
         layout.add_widget(MainMenu())
         return layout
+    
+    def beep(self):
+        if self.audio:
+            self.audio.play()
         
 if __name__ == "__main__":
     levels = []  # store levels of microphone
