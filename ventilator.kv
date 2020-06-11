@@ -81,16 +81,16 @@
                 tick_color: 1, 1, 1, 0.5
                 border_color: 1, 1, 1, 1
                 #background_color: 0.01, 0.1, 0.25, 1
-                x_ticks_major:5
-                y_ticks_major:20
+                x_ticks_major:10
+                y_ticks_major:10
                 y_grid_label:False
                 x_grid_label:False
                 x_grid:True
                 y_grid:True
                 xmin:-0
                 xmax:100
-                ymin:-0
-                ymax:100
+                ymin:195
+                ymax:200
             Graph:
                 id: flow
                 plot: LinePlot
@@ -101,8 +101,8 @@
                 tick_color: 1, 1, 1, 0.5
                 border_color: 1, 1, 1, 1
                 #background_color: 0.01, 0.1, 0.25, 1
-                x_ticks_major:5
-                y_ticks_major:20
+                x_ticks_major:10
+                y_ticks_major:0.08
                 y_grid_label:False
                 x_grid_label:False
                 x_grid:True
@@ -110,19 +110,19 @@
                 xmin:-0
                 xmax:100
                 ymin:-0
-                ymax:100
+                ymax:0.06
             Graph:
                 id: volumn
                 plot: LinePlot
                 #xlabel:'X'
-                ylabel:'Volumn'
+                ylabel:'Volume'
                 font_size: 20
                 padding: 10
                 tick_color: 1, 1, 1, 0.5
                 border_color: 1, 1, 1, 1
                 #background_color: 0.01, 0.1, 0.25, 1
-                x_ticks_major:5
-                y_ticks_major:20
+                x_ticks_major:10
+                y_ticks_major:0.25
                 y_grid_label:False
                 x_grid_label:False
                 x_grid:True
@@ -130,7 +130,7 @@
                 xmin:-0
                 xmax:100
                 ymin:-0
-                ymax:100
+                ymax:0.2
                 
 
         BoxLayout:
@@ -138,21 +138,54 @@
             orientation: "vertical"
             id: right
             #parameter1 IE ratio
-            #parameter2 Para
+            #parameter2 Resp. Rate
             #parameter3 temp
             #parameter4 humidity
-            Label:
-                id: ieratio
-                text: "I:E Ratio\n1:3"
-                font_size: 25
-                text_size: self.size
-                halign: "center"
-                valign: "middle"
-                padding_x: 15
             BoxLayout:
                 orientation: "vertical"
                 Label:
-                    text: "Parameter"
+                    id: ieratio
+                    text: "I:E Ratio"
+                    font_size: 25
+                    text_size: self.size
+                    halign: "center"
+                    valign: "middle"
+                    padding_x: 15
+                BoxLayout:
+                    orientation: "horizontal"
+                    Button:
+                        text: "+"
+                        text_size: self.size
+                        background_normal: ''
+                        background_color: 0.0157, 0.1137, 0.2667, 1
+                        font_size: 25
+                        halign: 'center'
+                        valign: 'top'
+                        on_press: 
+                            root.left_one() 
+                            app.beep()
+                    Label:
+                        id: ie
+                        text: str(root.ie)
+                        font_size: 25
+                        text_size: self.size
+                        halign: 'center'
+                        valign: 'top'
+                    Button:
+                        text: '+'
+                        text_size: self.size
+                        background_normal: ''
+                        background_color: 0.0157, 0.1137, 0.2667, 1
+                        font_size: 25
+                        halign: 'center'
+                        valign: 'top'
+                        on_press: 
+                            root.right_one()
+                            app.beep()
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    text: "Resp. Rate"
                     font_size: 25
                     text_size: self.size
                     halign: "center"
@@ -168,11 +201,12 @@
                         font_size: 25
                         halign: 'center'
                         valign: 'top'
-                        on_press: root.minus_one()
-                        on_release: app.beep()
+                        on_press: 
+                            root.minus_one() 
+                            app.beep()
                     Label:
-                        id: param
-                        text: str(root.param)
+                        id: resp
+                        text: str(root.resp)
                         font_size: 25
                         text_size: self.size
                         halign: 'center'
@@ -185,24 +219,42 @@
                         font_size: 25
                         halign: 'center'
                         valign: 'top'
-                        on_press: root.plus_one()
-                        on_release: app.beep()
-            Label:
-                id: temp
-                text: "Temperature\n75\xb0F"
-                font_size: 25
-                text_size: self.size
-                halign: "center"
-                valign: "middle"
-                padding_x: 15
-            Label:
-                id: humid
-                text: "Humidity\n80%"
-                font_size: 25
-                text_size: self.size
-                halign: "center"
-                valign: "middle"
-                padding_x: 15
+                        on_press: 
+                            root.plus_one()
+                            app.beep()
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    text: "Temperature"
+                    font_size: 25
+                    text_size: self.size
+                    halign: "center"
+                    valign: "bottom"
+                    padding_x: 15
+                Label:
+                    id: temp
+                    text: str(root.temperature) + "\xb0F"
+                    font_size: 25
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'top'
+                    
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    text: "Humidity"
+                    font_size: 25
+                    text_size: self.size
+                    halign: "center"
+                    valign: "bottom"
+                    padding_x: 15
+                Label:
+                    id: humid
+                    text: str(root.humidity) + "%"
+                    font_size: 25
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'top'
 
 
 
@@ -244,7 +296,7 @@
         on_press:
             app.manager.current = "home"
             if self.state == "normal": self.state = "down"
-        on_release: app.beep()
+            app.beep()
     ToggleButton:
         group: "mainmenu"
         text: "Records"
@@ -252,7 +304,7 @@
         on_press:
             app.manager.current = "records"
             if self.state == "normal": self.state = "down"
-        on_release: app.beep()
+            app.beep()
     ToggleButton:
         group: "mainmenu"
         text: "Alarms"
@@ -260,6 +312,6 @@
         on_press:
             app.manager.current = "alarms"
             if self.state == "normal": self.state = "down"
-        on_release: app.beep()
+            app.beep()
 
 
