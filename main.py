@@ -28,7 +28,7 @@ from math import sin
 import RPi.GPIO as GPIO
 import pigpio
 
-
+'''
 def mprls():
     
     global pressure
@@ -38,7 +38,7 @@ def mprls():
         if len(pressure) >= 200:
             pressure = []
         pressure.append(mpr.pressure)
-        
+
 def bmp280():
     global pressure
     i2c = busio.I2C(board.SCL, board.SDA)
@@ -49,38 +49,16 @@ def bmp280():
         #print(bmp.pressure)
         pressure.append(bmp.pressure)
         #time.sleep(0.1)
- 
-
-def dht11():
-    global temperature
-    global humidity
-    dht = adafruit_dht.DHT11(board.D17)
-    while True:
-        try:
-            # Print the values to the serial port
-            temp_c = dht.temperature
-            humid = dht.humidity
-            temperature = int(temp_c * (9 / 5) + 32)
-            humidity = int(humid)
-            print(temperature)
-        except RuntimeError as error:
-            # Errors happen fairly often, DHT's are hard to read, just keep going
-            print(error.args[0])
-      
-        
 
 def ads1115():
     global flow
     global volume
     # Create the I2C bus
     i2c = busio.I2C(board.SCL, board.SDA)
-
     # Create the ADC object using the I2C bus
     ads = ADS.ADS1015(i2c)
-
     # Create single-ended input on channel 0
     chan = AnalogIn(ads, ADS.P0)
-
     # Create differential input between channel 0 and 1
     #chan = AnalogIn(ads, ADS.P0, ADS.P1)
     while True:
@@ -91,7 +69,7 @@ def ads1115():
         flow.append(f)
         volume.append(f+10)
         time.sleep(0.1)
-
+'''
 def data_collection():
     global pressure
     global flow
@@ -113,15 +91,15 @@ def data_collection():
         flow.append(f)
         acc += f
         volume.append(acc)
-        print(bmp.pressure, f, acc)
+        #print(bmp.pressure, f, acc)
     
     
 class Home(BoxLayout):
     pressure = ObjectProperty(None)
     flow = ObjectProperty(None)
     volumn = ObjectProperty(None)
-    ie = StringProperty('2:1')
-    resp = NumericProperty(20)
+    ie = StringProperty('1:4')
+    resp = NumericProperty(10)
     temperature = NumericProperty(None)
     humidity = NumericProperty(None)
     
@@ -155,7 +133,7 @@ class Home(BoxLayout):
                 self.temperature = int(temp_c * (9 / 5) + 32)
                 self.humidity = int(humid)
             time.sleep(30)
-    
+    '''
     def dht11(self):
         dht = adafruit_dht.DHT11(board.D17)
         while True:
@@ -165,7 +143,7 @@ class Home(BoxLayout):
                 self.temperature = int(temperature_c * (9 / 5) + 32)
                 self.humidity = int(humid)
             time.sleep(30)
-    
+    '''
     def update_temp_humid(self):
         temp_humid_thread = Thread(target = self.dht11_old)
         temp_humid_thread.daemon = True
@@ -201,6 +179,9 @@ class Home(BoxLayout):
         resp_thread.daemon = True
         resp_thread.start()
         '''
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(27, GPIO.OUT)
         self.ESC = 4  #Connect the ESC in this GPIO pin
         self.pi = pigpio.pi()
         self.pi.set_servo_pulsewidth(self.ESC, 0)
@@ -212,13 +193,17 @@ class Home(BoxLayout):
     def resp_control(self):
         speed = 1200
         while True:
-            self.ie_left = int(self.ie[0])
-            self.ie_right = int(self.ie[2])
+            self.i = int(self.ie[0])
+            self.e = int(self.ie[2])
+            # Inspiratory
             self.pi.set_servo_pulsewidth(self.ESC, speed)
-            time.sleep(60/self.resp*self.ie_left/(self.ie_left+self.ie_right))
+            GPIO.output(27, False)
+            time.sleep(60/self.resp*self.i/(self.i+self.e))
+            # Expiratory
             self.pi.set_servo_pulsewidth(self.ESC, 0)
-            time.sleep(60/self.resp*self.ie_right/(self.ie_left+self.ie_right))
-
+            GPIO.output(27, True)
+            time.sleep(60/self.resp*self.e/(self.i+self.e))
+            
             '''
             self.ie_left = int(self.ie[0])
             self.ie_right = int(self.ie[2])
@@ -227,13 +212,6 @@ class Home(BoxLayout):
             self.pwm.ChangeDutyCycle(0)
             time.sleep(60/self.resp*self.ie_right/(self.ie_left+self.ie_right))
             '''
-        #Clock.schedule_interval(self.get_value, 60/self.resp)
-        #pwm.stop()
-
-        
-        
-    
-    
 
 class Records(GridLayout):
     pass
@@ -243,7 +221,6 @@ class Alarms(GridLayout):
 
 class Header(BoxLayout):
     now = StringProperty('')
-    
     def __init__(self):
         super(Header, self).__init__()
         self.update_time()
@@ -254,9 +231,6 @@ class Header(BoxLayout):
     
     def get_time(self, dt):
         self.now = datetime.now().strftime("%I:%M %p\n%m/%d/%Y")
-        
-    
-    
 
 class MainMenu(BoxLayout):
     pass
