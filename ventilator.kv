@@ -5,8 +5,6 @@
     orientation: "horizontal"
     size_hint: (1, None)
     height: 60
-    
-    
     time: time
     canvas:
         Color:
@@ -16,7 +14,6 @@
             size: self.size
     BoxLayout:
         orientation: "horizontal"
-        #padding_x: 15
         Image:
             id: avatar
             source: "young-man.png"
@@ -66,21 +63,15 @@
             padding: 15
             size_hint_x: None
             width: 800
-            orientation: "vertical"
-            #plot1 - pressure
-            #plot2 - flow
-            #plot3 - volumn
-            
+            orientation: "vertical"           
             Graph:
                 id: pressure
                 plot: LinePlot
-                #xlabel:'X'
                 ylabel:'Pressure'
                 font_size: 20
                 padding: 10
                 tick_color: 1, 1, 1, 0.5
                 border_color: 1, 1, 1, 1
-                #background_color: 0.01, 0.1, 0.25, 1
                 x_ticks_major:10
                 y_ticks_major:10
                 y_grid_label:False
@@ -94,13 +85,11 @@
             Graph:
                 id: flow
                 plot: LinePlot
-                #xlabel:'X'
                 ylabel:'Flow'
                 font_size: 20
                 padding: 10
                 tick_color: 1, 1, 1, 0.5
                 border_color: 1, 1, 1, 1
-                #background_color: 0.01, 0.1, 0.25, 1
                 x_ticks_major:10
                 y_ticks_major:0.08
                 y_grid_label:False
@@ -114,13 +103,11 @@
             Graph:
                 id: volumn
                 plot: LinePlot
-                #xlabel:'X'
                 ylabel:'Volume'
                 font_size: 20
                 padding: 10
                 tick_color: 1, 1, 1, 0.5
                 border_color: 1, 1, 1, 1
-                #background_color: 0.01, 0.1, 0.25, 1
                 x_ticks_major:10
                 y_ticks_major:0.25
                 y_grid_label:False
@@ -131,8 +118,6 @@
                 xmax:100
                 ymin:-0
                 ymax:0.2
-                
-
         BoxLayout:
             padding: 15
             orientation: "vertical"
@@ -256,8 +241,6 @@
                     halign: 'center'
                     valign: 'top'
 
-
-
 <Records>:
     canvas:
         Color:
@@ -266,7 +249,6 @@
             pos: self.pos
             size: self.size
 
-
 <Alarms>:
     canvas:
         Color:
@@ -274,7 +256,6 @@
         Rectangle:
             pos: self.pos
             size: self.size
-
 
 <MainMenu>:
     orientation: "horizontal"
@@ -313,5 +294,3 @@
             app.manager.current = "alarms"
             if self.state == "normal": self.state = "down"
             app.beep()
-
-
