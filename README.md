@@ -22,7 +22,7 @@ python3 main.py
 
 ## Circuit Wiring
 
-![circuit](images/design_615.PNG)
+![circuit](images/design_615.png)
 
 ## Sensor and Hardware
 
